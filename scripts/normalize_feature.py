@@ -33,10 +33,8 @@ for root, dirs, files in feature_dir:
 	for file in files:
 		name = file
 		M = []
-		print name
 		with open(root + file) as f:
 			lines = f.readlines()
-			print len(lines)
 			for line in lines[1:]:
 				line = line.strip().split(',')
 				for i in  xrange(len(line)):
@@ -47,9 +45,8 @@ for root, dirs, files in feature_dir:
 					M.append(line)
 		if len(M) == 0:
 			continue
-		print len(M)
 		A = feature_normalization(M, [0,1,2,3])
-		# with open(INPUT_DIR + name, 'w') as g:
-		# 	cPickle.dump(M, g)
-		# with open(NORMED_DIR + name, 'w') as g:
-		# 	cPickle.dump(A, g)
+		with open(INPUT_DIR + name, 'w') as g:
+			cPickle.dump(M, g)
+		with open(NORMED_DIR + name, 'w') as g:
+			cPickle.dump(A, g)
