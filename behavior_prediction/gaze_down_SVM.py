@@ -1,6 +1,5 @@
 import os
 import numpy as np
-import pylab as pl
 from sklearn.svm import SVC
 from math import sqrt, pow
 import cPickle
