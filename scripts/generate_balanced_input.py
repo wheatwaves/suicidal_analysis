@@ -41,7 +41,7 @@ for root, dirs, files in annot_dir:
 			for ind in sample_list:
 				sampled_negative.append(negative[ind])
 		with open(INPUT_DIR+name,'w') as f:
-			inputs = np.append(positive,sampled_negative)
+			inputs = positive + sampled_negative
 			random.shuffle(inputs)
 			cPickle.dump(inputs,f)
 
