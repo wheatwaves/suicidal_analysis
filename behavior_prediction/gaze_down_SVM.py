@@ -7,7 +7,7 @@ SU = ['CC0001', 'CC0005', 'CC0006', 'CC0008', 'CC0011', 'CC0013']
 CO = ['CC0004', 'CC0020', 'CC0021', 'CC0022', 'CC0050', 'CC0051']
 MH = ['CC0002', 'CC0010', 'CC0028', 'CC0031', 'CC0035', 'CC0036']
 DATA_DIR = '../data/svm_input/'
-UNNORMED_DATA_DIR = '../data/unnormed_svm_input'
+UNNORMED_DATA_DIR = '../data/unnormed_svm_input/'
 # leave last 2 file in each category for test, for training use 4-fold evaluation
 kernel_parameter = ['poly','rbf','linear','sigmoid','precomputed']
 c_parameter = range(-8,4)
