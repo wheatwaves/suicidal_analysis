@@ -7,6 +7,7 @@ SU = ['CC0001', 'CC0005', 'CC0006', 'CC0008', 'CC0011', 'CC0013']
 CO = ['CC0004', 'CC0020', 'CC0021', 'CC0022', 'CC0050', 'CC0051']
 MH = ['CC0002', 'CC0010', 'CC0028', 'CC0031', 'CC0035', 'CC0036']
 DATA_DIR = '../data/svm_input/'
+UNNORMED_DATA_DIR = '../data/unnormed_svm_input'
 # leave last 2 file in each category for test, for training use 4-fold evaluation
 kernel_parameter = ['poly','rbf','linear','sigmoid','precomputed']
 c_parameter = range(-8,4)
@@ -16,13 +17,19 @@ def svm(train_data, evaluation_data, kernel_name, c, feature_size):
 	train_X, train_Y, evaluation_X, evaluation_Y = [], [], [], []
 	for file_name in train_data:
 		data = cPickle.load(open(DATA_DIR+file_name))
-		for line in data:
-			train_X.append(line[-1-feature_size:-1])
+		unnormed_data = cPickle.load(open(UNNORMED_DATA_DIR+file_name))
+		for i in xrange(len(data)):
+			line = data[i]
+			u_line = unnormed_data[i]
+			train_X.append(np.append(line[-1-feature_size:-1],u_line[-1-feature_size:-1]))
 			train_Y.append(line[-1])
 	for file_name in evaluation_data:
 		data = cPickle.load(open(DATA_DIR+file_name))
-		for line in data:
-			evaluation_X.append(line[-1-feature_size:-1])
+		unnormed_data = cPickle.load(open(UNNORMED_DATA_DIR+file_name))
+		for i in xrange(len(data)):
+			line = data[i]
+			u_line = unnormed_data[i]
+			evaluation_X.append(np.append(line[-1-feature_size:-1],u_line[-1-feature_size:-1]))
 			evaluation_Y.append(line[-1])		
 	svc = SVC(kernel = kernel_name, C = pow(10, c), class_weight = 'balanced')
 	svc.fit(train_X, train_Y)
@@ -102,7 +109,7 @@ if __name__ == '__main__':
 	print 'best_kernel = ' + best_kernel
 	print 'best_c = ' + str(best_c)
 	print 'best_feature_size = ' + str(best_feature_size)
-	F1, accuracy, precision, recall = svm(SU[:4]+CO[:4]+MH[:4],SU[4:]+CO[4:]+MH[4:])
+	F1, accuracy, precision, recall = svm(SU[:4]+CO[:4]+MH[:4],SU[4:]+CO[4:]+MH[4:],best_kernel,best_c,best_feature_size)
 	print 'test_F1 = '+str(F1)
 	print 'test_accuracy = ' + str(accuracy)
 	print 'test_precision = ' + str(precision)
