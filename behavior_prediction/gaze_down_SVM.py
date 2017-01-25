@@ -7,12 +7,11 @@ SU = ['CC0001', 'CC0005', 'CC0006', 'CC0008', 'CC0011', 'CC0013']
 CO = ['CC0004', 'CC0020', 'CC0021', 'CC0022', 'CC0050', 'CC0051']
 MH = ['CC0002', 'CC0010', 'CC0028', 'CC0031', 'CC0035', 'CC0036']
 DATA_DIR = '../data/svm_input/'
-LOG_PATH = '../logs/unbalanced_normed_data_result'
 # leave last 2 file in each category for test, for training use 4-fold evaluation
 kernel_parameter = ['poly','rbf','linear','sigmoid','precomputed']
 c_parameter = range(-8,4)
 feature_parameter = [1,2,14]
-g = open(LOG_PATH,'w')
+
 def svm(train_data, evaluation_data, kernel_name, c, feature_size):
 	train_X, train_Y, evaluation_X, evaluation_Y = [], [], [], []
 	for file_name in train_data:
@@ -62,12 +61,12 @@ def cross_validation(kernel, c, feature_size):
 			group.remove(group[ind])
 			for item in group:
 				train_data.append(item)
-		g.write('ind = ' + str(ind) + '\n')
+		print 'ind = ' + str(ind)
 		F1, accuracy, precision, recall = svm(train_data, evaluation_data, kernel, c, feature_size)
-		g.write('F1 = ' + str(F1) + '\n')
-		g.write('accuracy = ' + str(accuracy) + '\n')
-		g.write('precision = ' + str(precision) + '\n')
-		g.write('recall = ' + str(recall) + '\n')
+		print 'F1 = ' + str(F1)
+		print 'accuracy = ' + str(accuracy)
+		print 'precision = ' + str(precision)
+		print 'recall = ' + str(recall)
 		F1_list.append(F1)
 		accuracy_list.append(accuracy)
 		precision_list.append(precision)
@@ -78,19 +77,19 @@ def cross_validation(kernel, c, feature_size):
 def grid_search():
 	best_kernel, best_c, best_feature_size = '', 0, 0
 	best_F1 = 0
-	g.write('start grid search')
+	print 'start grid search'
 	for kernel in kernel_parameter:
 		for c in c_parameter:
 			for feature_size in feature_parameter:
-				g.write('--'*32 + '\n')
-				g.write('kernel = ' + kernel + '\n')
-				g.write('c = ' + str(c) + '\n')
-				g.write('feature_size = ' + str(feature_size) + '\n')
+				print '--'*32
+				print 'kernel = ' + kernel
+				print 'c = ' + str(c)
+				print 'feature_size = ' + str(feature_size)
 				F1, accuracy, precision, recall = cross_validation(kernel, c, feature_size)
-				g.write('overall_F1 = ' + str(F1) + '\n')
-				g.write('overall_accuracy = ' + str(accuracy) + '\n')
-				g.write('overall_precision = ' + str(precision) + '\n')
-				g.write('overall_recall = ' + str(recall) + '\n')
+				print 'overall_F1 = ' + str(F1)
+				print 'overall_accuracy = ' + str(accuracy)
+				print 'overall_precision = ' + str(precision)
+				print 'overall_recall = ' + str(recall)
 				if F1 > best_F1:
 					best_F1 = F1
 					best_kernel, best_c, best_feature_size = kernel, c, feature_size
@@ -99,16 +98,15 @@ def grid_search():
 
 if __name__ == '__main__':
 	best_F1, best_kernel, best_c, best_feature_size = grid_search()
-	g.write('best_F1 = ' + str(best_F1) + '\n')
-	g.write('best_kernel = ' + best_kernel + '\n')
-	g.write('best_c = ' + str(best_c) + '\n')
-	g.write('best_feature_size = ' + str(best_feature_size) + '\n')
+	print 'best_F1 = ' + str(best_F1)
+	print 'best_kernel = ' + best_kernel
+	print 'best_c = ' + str(best_c)
+	print 'best_feature_size = ' + str(best_feature_size)
 	F1, accuracy, precision, recall = svm(SU[:4]+CO[:4]+MH[:4],SU[4:]+CO[4:]+MH[4:])
-	g.write('test_F1 = '+str(F1) + '\n')
-	g.write('test_accuracy = ' + str(accuracy) + '\n')
-	g.write('test_precision = ' + str(precision) + '\n')
-	g.write('test_recall = ' + str(recall) + '\n')
-	g.close()
+	print 'test_F1 = '+str(F1)
+	print 'test_accuracy = ' + str(accuracy)
+	print 'test_precision = ' + str(precision)
+	print 'test_recall = ' + str(recall)
 
 
 
