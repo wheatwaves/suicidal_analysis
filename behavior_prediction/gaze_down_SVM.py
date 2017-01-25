@@ -24,7 +24,7 @@ def svm(train_data, evaluation_data, kernel_name, c, feature_size):
 		for line in data:
 			evaluation_X.append(line[-1-feature_size:-1])
 			evaluation_Y.append(line[-1])		
-	svc = SVC(kernel = kernel_name, C = pow(10, c), class_weight = 'auto')
+	svc = SVC(kernel = kernel_name, C = pow(10, c), class_weight = 'balanced')
 	svc.fit(train_X, train_Y)
 	predict_Y = svc.predict(evaluation_X)
 	TP, FP ,FN = .0, .0, .0
