@@ -1,8 +1,8 @@
 import os
 import cPickle
 import numpy as np
-X_DIR = "../data/normed_features/"
-INPUT_DIR = "../data/svm_input/"
+X_DIR = "../data/input_features/"
+INPUT_DIR = "../data/unnormed_svm_input/"
 ANNOTATION_DIR = "../data/sen_annotation/"
 annot_dir = os.walk(ANNOTATION_DIR)
 for root, dirs, files in annot_dir:
