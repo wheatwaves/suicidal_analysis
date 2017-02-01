@@ -56,7 +56,7 @@ def train_lstm(train_X, train_Y, validation_X, validation_Y):
 	              optimizer='rmsprop',
 	              metrics=['accuracy'])
 
-	model.fit(X_train, Y_train, batch_size = batch_size, nb_epoch=10, validation_data=(validation_X, validation_Y))
+	model.fit(train_X, train_Y, batch_size = batch_size, nb_epoch=10, validation_data=(validation_X, validation_Y))
 	score = model.evaluate(X_test, Y_test, batch_size = batch_size)
 
 
