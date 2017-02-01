@@ -8,19 +8,17 @@ CO = ['CC0004', 'CC0020', 'CC0021', 'CC0022', 'CC0050', 'CC0051']
 MH = ['CC0002', 'CC0010', 'CC0028', 'CC0031', 'CC0035', 'CC0036']
 batch_size = 32
 DATA_DIR = '../data/svm_input/'
-history = 2.0 #measured in seconds
-total_time = 120.0
+history = 20
 feature_size = 14
 output_dim = 64
 def construct_sequence_data(filename):
 	data = cPickle.load(filename)
 	X,Y,sequence_X,sequence_Y = [],[],[],[]
-	history_len = int(len(data)*history/total_time)
 	for line in data:
 		X.append(line[-1-feature_size:-1])
 		Y.append(line[-1])
-	for i in xrange(history_len,len(X)):
-		sequence_X.append(X[i-history_len:i+1])
+	for i in xrange(history,len(X)):
+		sequence_X.append(X[i-history:i+1])
 		sequence_Y.append(Y[i])
 	return sequence_X, sequence_Y
 def load_data(train_file,validation_file,test_file):
@@ -49,7 +47,7 @@ def load_data(train_file,validation_file,test_file):
 
 def train_lstm(train_X, train_Y, validation_X, validation_Y):
 	model = Sequential()
-	model.add(LSTM(output_dim=output_dim, activation='sigmoid', inner_activation='hard_sigmoid', dropout_W=0.2, dropout_U=0.2))
+	model.add(LSTM(output_dim=output_dim, activation='sigmoid', inner_activation='hard_sigmoid', dropout_W=0.2, dropout_U=0.2, input_shape = (history,feature_size)))
 	# model.add(Dropout(0.2))
 	model.add(Dense(1))
 	model.add(Activation('sigmoid'))
