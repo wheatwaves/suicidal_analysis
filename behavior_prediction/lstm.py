@@ -64,7 +64,7 @@ def train_lstm(train_X, train_Y, validation_X, validation_Y):
 
 if __name__ == '__main__':
 	train_file = SU[:1]+CO[:1]+MH[:1]
-	validation_file = SU[3]+CO[3]+MH[3]
+	validation_file = SU[3:4]+CO[3:4]+MH[3:4]
 	test_file = SU[4:]+CO[4:]+MH[4:]
 	train_X, train_Y, validation_X, validation_Y, test_X, test_Y = load_data(train_file,validation_file,test_file)
 	train_lstm(train_X, train_Y, validation_X, validation_Y)
