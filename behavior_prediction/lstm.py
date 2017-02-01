@@ -47,7 +47,7 @@ def load_data(train_file,validation_file,test_file):
 
 def train_lstm(train_X, train_Y, validation_X, validation_Y):
 	model = Sequential()
-	model.add(LSTM(output_dim=output_dim, activation='sigmoid', inner_activation='hard_sigmoid', dropout_W=0.2, dropout_U=0.2, input_shape = (history,feature_size)))
+	model.add(LSTM(output_dim=output_dim, activation='sigmoid', inner_activation='hard_sigmoid', dropout_W=0.2, dropout_U=0.2, input_shape = (history+1,feature_size)))
 	# model.add(Dropout(0.2))
 	model.add(Dense(1))
 	model.add(Activation('sigmoid'))
