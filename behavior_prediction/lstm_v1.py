@@ -17,26 +17,26 @@ def load_data(train_file,validation_file,test_file,history):
 	for filename in train_file:
 		data = cPickle.load(open(DATA_DIR+filename))
 		for line in data:
-			train_X.append(line[-1-feature_size:-1])
-			train_Y.append(line[-1])
+			train_X.append([line[-1-feature_size:-1]])
+			train_Y.append([line[-1:0]])
 	for filename in validation_file:
 		data = cPickle.load(open(DATA_DIR+filename))
 		for line in data:
-			validation_X.append(line[-1-feature_size:-1])
-			validation_Y.append(line[-1])
+			validation_X.append([line[-1-feature_size:-1]])
+			validation_Y.append([line[-1:0]])
 	for filename in test_file:
 		data = cPickle.load(open(DATA_DIR+filename))
 		for line in data:
-			test_X.append(line[-1-feature_size:-1])
-			test_Y.append(line[-1])
-			
+			test_X.append([line[-1-feature_size:-1]])
+			test_Y.append([line[-1:0]])
+
 	return train_X, train_Y, validation_X, validation_Y, test_X, test_Y
 
 
 
 def train_lstm(train_X, train_Y, validation_X, validation_Y, output_dim, history, dropout):
 	model = Sequential()
-	model.add(LSTM(output_dim=output_dim, return_sequences = True, activation='sigmoid', inner_activation='hard_sigmoid', dropout_W=dropout, dropout_U=dropout, input_shape = (1,feature_size)))
+	model.add(LSTM(output_dim=output_dim, stateful = True, return_sequences = True, activation='sigmoid', inner_activation='hard_sigmoid', dropout_W=dropout, dropout_U=dropout, batch_input_shape = (1,1,feature_size)))
 	# model.add(Dropout(0.2))
 	model.add(Dense(1))
 	model.add(Activation('sigmoid'))
